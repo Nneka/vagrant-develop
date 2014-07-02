@@ -22,6 +22,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
        vb.customize ["modifyvm", :id, "--memory", "1024"]
    end
    
+   #This installs puppet on the guest server.  
+   #TODO: determine Linux flavor, and use correct bash script:  apt-get or yum 
    config.vm.provision "shell", :inline => <<-SHELL
      apt-get update
 	 apt-get install -y puppet
