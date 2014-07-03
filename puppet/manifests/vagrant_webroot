@@ -1,0 +1,64 @@
+<VirtualHost *:80>
+  ServerName fnstest.dev.bstonetech.com
+  ServerAlias fnstest.dev.bstonetech.com
+  DocumentRoot /vagrant/www/fnsdev
+  RewriteEngine On
+
+  <IfModule mod_security2.c>
+    SecRuleEngine DetectionOnly
+  </IfModule>
+
+  <Directory />
+    Options FollowSymLinks
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+  </Directory>
+
+  <Directory />
+    Options FollowSymLinks
+    AllowOverride None
+  </Directory>
+
+  <Location /server-status>
+    SetHandler server-status
+
+    Order Allow,Deny
+    Allow from all
+  </Location>
+
+  LogLevel info
+  ErrorLog /var/log/httpd/fns-error.log
+  CustomLog /var/log/httpd/fns-access.log combined
+
+  RewriteEngine On
+  RewriteLog /var/log/httpd/fns-rewrite.log
+  # level 0 => Do not log rewrite
+  RewriteLogLevel 0
+
+  ###
+  # Canonical host, localhost
+  ###
+  # For sites running on a port other than 80
+  RewriteCond %{HTTP_HOST}   !^fnstest.dev.bstonetech.com [NC]
+  RewriteCond %{HTTP_HOST}   !^$
+  RewriteCond %{SERVER_PORT} !^80$
+  RewriteRule ^/(.*)$        http://fnstest.dev.bstonetech.com:%{SERVER_PORT}/$1 [L,R=301]
+  # For sites running on port 80
+  RewriteCond %{HTTP_HOST}   !^fnstest.dev.bstonetech.com [NC]
+  RewriteCond %{HTTP_HOST}   !^$
+  RewriteRule ^/(.*)$        http://fnstest.dev.bstonetech.com/$1 [L,R=301]
+
+  ###
+  # Maintenance file
+  ###
+  RewriteCond %{DOCUMENT_ROOT}/system/maintenance.html -f
+  RewriteCond %{SCRIPT_FILENAME} !maintenance.html
+  RewriteRule ^.*$ /system/maintenance.html [L,R=302]
+  # For sites running on a port other than 80
+  RewriteCond %{DOCUMENT_ROOT}/system/maintenance.html -f
+  RewriteCond %{SCRIPT_FILENAME} !maintenance.html
+  RewriteCond %{SERVER_PORT} !^80$
+  RewriteRule ^.*$        http://fnstest.dev.bstonetech.com:%{SERVER_PORT}/system/maintenance.html [L,R=302]
+
+</VirtualHost>

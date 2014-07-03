@@ -17,7 +17,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = BOX
   config.ssh.forward_agent = true
   config.vm.synced_folder ".", "/vagrant"
-
+  config.vm.host_name = "development.recipebox.vm"
   config.vm.provider "virtualbox" do |vb|
        vb.customize ["modifyvm", :id, "--memory", "1024"]
    end
@@ -29,10 +29,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	 apt-get install -y puppet
    SHELL
    
+   
    config.vm.provision "puppet" do |puppet|
-     puppet.manifests_path = "manifests"
+     puppet.manifests_path = "puppet/manifests"
      puppet.manifest_file  = "site.pp"
-	 puppet.module_path = "modules"
+	 puppet.module_path = "puppet/modules"
+	 puppet.options="--verbose --debug"
    end
    
 
