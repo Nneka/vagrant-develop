@@ -1,7 +1,7 @@
 <VirtualHost *:80>
-  ServerName fnstest.dev.bstonetech.com
-  ServerAlias fnstest.dev.bstonetech.com
-  DocumentRoot /vagrant/www/fnsdev
+  # ServerName fnstest.dev.bstonetech.com
+  #ServerAlias fnstest.dev.bstonetech.com
+  DocumentRoot /vagrant/docroot/f_gov_build/www/fnsdev
   RewriteEngine On
 
   <IfModule mod_security2.c>

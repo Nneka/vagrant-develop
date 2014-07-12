@@ -3,7 +3,7 @@ class apache {
     ensure => present,
   }
   
-  file { "/etc/apache2/sites-available/vagrant_webroot":
+  file { "/etc/apache2/sites-enabled/vagrant_webroot":
     ensure => present,
     source => "/vagrant/puppet/manifests/vagrant_webroot",
     require => Package["apache2"],
@@ -14,8 +14,12 @@ class apache {
     ensure => running,
     require => Package["apache2"],
     subscribe => [
-      File["/etc/apache2/sites-available/vagrant_webroot"]
+      File["/etc/apache2/sites-enabled/vagrant_webroot"]
     ],
   }
+  
+  
+  
+  
 
 }

@@ -4,12 +4,13 @@
 VAGRANTFILE_API_VERSION = "2"
 BOX = "chef-VAGRANTSLASH-ubuntu-13.04"
 RAM = "256"
+vm_name = "fns_gov"
 
 #Port Forwarding
-  http_forward_port = 20080
-  https_forward_port = 20443
-  ssh_forward_port = 20022
-  mysql_forward_port = 23306
+  http_forward_port = 40080
+  https_forward_port = 40443
+  ssh_forward_port = 40022
+  mysql_forward_port = 43306
 
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
@@ -18,8 +19,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.forward_agent = true
   config.vm.synced_folder ".", "/vagrant"
   config.vm.host_name = "development.recipebox.vm"
+
+  config.vm.network :forwarded_port, guest: 80, host: http_forward_port
+  config.vm.network :forwarded_port, guest: 443, host: https_forward_port
+  config.vm.network :forwarded_port, guest: 22, host: ssh_forward_port
+  config.vm.network :forwarded_port, guest: 3306, host: mysql_forward_port
+  
   config.vm.provider "virtualbox" do |vb|
-       vb.customize ["modifyvm", :id, "--memory", "1024"]
+       vb.customize ["modifyvm", :id, "--memory", "1024", "--name", vm_name]
    end
    
    #This installs puppet on the guest server.  
