@@ -18,7 +18,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = BOX
   config.ssh.forward_agent = true
   config.vm.synced_folder ".", "/vagrant"
-  config.vm.host_name = "development.recipebox.vm"
+  config.vm.host_name = "behat-demo"
 
   config.vm.network :forwarded_port, guest: 80, host: http_forward_port
   config.vm.network :forwarded_port, guest: 443, host: https_forward_port
@@ -41,7 +41,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
      puppet.manifests_path = "puppet/manifests"
      puppet.manifest_file  = "site.pp"
 	 puppet.module_path = "puppet/modules"
-	 puppet.options="--verbose --debug"
+	 # puppet.options="--verbose --debug"
    end
    
 
