@@ -4,3 +4,4 @@ docroot/*
 nbproject/*
 nbproject
 docroot
+docroot/sites/default/settings.php
